@@ -2,63 +2,34 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>contacts4u</title>
+    <title>Contact Manager Home</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/scipt.js" charset="utf-8"></script>
-    <style media="screen">
-      @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300&display=swap');
-      .body
-      {
-        width:100%;
-        height: 100%;
-        background-color: #d6d6d6;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-family: 'Red Hat Display', sans-serif;
-      }
-      .header
-      {
-        display: flex;
-        justify-content: center;
-        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(159,221,255,1) 14%, rgba(125,121,121,1) 100%);
-        height: 10%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-radius: 0px 0px 5px 5px;
-      }
-      #head
-      {
-        border: solid;
-        width: 10%;
-        margin: 10px;
-        border-radius: 11px;
-        background-color: #d6d6d6;
-        font-size: 20px;
-      }
+    <script src="js/script.js" charset="utf-8"></script>
 
-      .loginForm
-      {
-        display: flex;
-        margin: 200px;
-
-      }
-    </style>
   </head>
   <body>
     <div class="body">
       <div class="header">
         <header id="head">
-          <h3 style="text-align: center">Contacts 4 U</h3>
+          <h3>Contacts 4 U</h3>
+
         </header>
       </div>
       <div class="loginForm">
         <div class="loginBox">
+          <h2>Login to your Account</h2>
+          <div class="signIn">
+            <input type="text" name="loginName" id="loginName" value="" placeholder="Username" required><br>
+            <input type="password" name="loginPassword" id = "loginPassword"value="" placeholder="Password" required><br>
+            <button type="button" class="btn-hover" id = "loginButton"name="loginButton" onclick="doLogin();">Log in</button>
+            <hr>
+            <button type="button" class="btn-hover" id="registerButton" name="registerButton" onclick="window.location.href = 'http://contacts4u.info/registration.html'">Register</button>
+            <span id="loginResult"></span>
+          </div>
 
         </div>
         <div class="signupBox">
+          <img src="images/loginIllustration.png" alt="" width="400px" height="263px">
 
         </div>
       </div>
