@@ -8,9 +8,37 @@
   <body>
     <div class="body">
       <div class="header">
+        <header id="head">
+          <h3>Contacts 4 U</h3>
+        </header>
+      </div>
+      <div class="search-container">
+        <h2>Search Contacts</h2>
+        <div class="searchBar">
+          <input type="text" name="searchText" id="searchText" value="" placeholder="Search" >
+          <button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
+        </div>
 
       </div>
-      <h2>Contacts Page(In Progess)</h2>
+      <div class="contact-container">
+
+        <div class="add-container">
+          <h2 style="color:white">Add Contact Information</h2>
+          <div class="addContact">
+            <input type="text" name="contactFirst" id="contactFirst" value="" placeholder="First"><br>
+            <input type="text" name="contactLast" id="contactLast" value="" placeholder="Last"><br>
+            <input type="email" name="contactEmail" id="contactEmail" value="" placeholder="Email"><br>
+            <input type="tel" name="" value="" id="contactNumber"maxlength="10" placeholder="Phone Number"><br>
+            <button type="button" class="btn-hover" id="addContact-btn"  name="button">Add Contact</button>
+          </div>
+
+        </div>
+        <div class="edit-container">
+          <h2>edit</h2>
+        </div>
+
+      </div>
+
     </div>
 
   </body>
