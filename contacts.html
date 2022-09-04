@@ -10,9 +10,9 @@
   <body>
     <div class="body">
       <div class="header">
-        <div class="">
+
           <h1 id="userName"></h1>
-        </div>
+
         <header id="head">
           <h3>Contacts 4 U</h3>
         </header>
@@ -27,7 +27,6 @@
           <input type="text" name="searchText" id="searchText" value="" placeholder="Search" >
           <button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
         </div>
-        <p id="contactList"></p>
       </div>
       <div class="contact-container">
 
@@ -43,7 +42,14 @@
 
         </div>
         <div class="edit-container">
-          <h2>edit</h2>
+          <h2>Select Contact</h2>
+          <div class="search-list">
+             <p id="contactList">CONTACTS LIST</p>
+          </div>
+          <div class="contact-btns">
+            <button type="button" class="btn-hover" id="editContact-btn" name="button">Edit Contact</button>
+            <button type="button" class="btn-hover" id="deleteContact-btn"name="button">Delete Contact</button>
+          </div>
         </div>
 
       </div>
