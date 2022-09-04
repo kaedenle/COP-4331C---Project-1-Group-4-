@@ -26,7 +26,6 @@
 .header
 {
   display: flex;
-
   justify-content: center;
   align-items: center;
   background: linear-gradient(90deg, rgba(88,88,88,1) 0%, rgba(44,44,71,1) 30%, rgba(23,22,22,1) 100%);
@@ -42,7 +41,7 @@
   border: solid;
   justify-content: center;
   align-items: center;
-
+  position: fixed;
   width: 10%;
   height: 50px;
   margin: 10px;
@@ -52,6 +51,7 @@
 }
 #head h3
 {
+
   justify-content: center;
   text-align: center;
 }
@@ -163,9 +163,25 @@
 {
   background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
   box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+
 }
 
 /* Contacts CSS */
+.header-btn
+{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+#logoutButton
+{
+  /* font-family: 'Red Hat Display', sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+  cursor: pointer; */
+  background: linear-gradient(90deg, rgba(245,3,3,1) 0%, rgba(227,72,72,1) 47%, rgba(250,2,2,1) 100%);
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+}
 .contact-container
 {
   width: 75%;
@@ -183,33 +199,41 @@
 }
 .addContact input
 {
-  width: 225px;
+  width: 250px;
   font-size: 18px;
   font-family: 'Red Hat Display', sans-serif;
   margin: 8px;
+  border: solid #585858;
+  border-radius: 10px;
 }
 #addContact-btn
 {
-  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  /* background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed); */
+  background-image: linear-gradient(90deg, rgba(88,88,88,1) 0%, rgba(44,44,71,1) 65%, rgba(23,22,22,1) 100%);
   box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+  margin: 15px;
+
 }
 .search-container
 {
   border: solid;
   text-align:center;
   width: 50%;
-  margin-top: 75px;
+  margin-top: 150px;
   background-color: white;
 
 }
 .searchBar
 {
   margin: 20px;
+  margin-bottom: 40px;
 }
 .searchBar button
 {
   border-color: black;
   height: 30px;
+  border-radius: 30px;
+  cursor: pointer;
 }
 .search-container input
 {
