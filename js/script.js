@@ -169,9 +169,7 @@ function addContact()
 	let newEmail = document.getElementById("contactEmail").value;
 	let newPhone = document.getElementById("contactNumber").value;
 
-	// document.getElementById("contactAddResult").innerHTML = "";
-
-	let tmp = {firstName:newFirst,lastName:newLast,email:newEmail,phone:newPhone,userId,userId};
+	let tmp = {firstName:newFirst,lastName:newLast,email:newEmail,phone:newPhone,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/AddContact.' + extension;
@@ -185,7 +183,7 @@ function addContact()
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-				document.getElementById("contactAddResult").innerHTML = "contact has been added";
+				document.getElementById("contactAddResult").innerHTML = "New Contact Added";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -201,7 +199,7 @@ function addContact()
 // 	let newColor = document.getElementById("colorText").value;
 // 	document.getElementById("colorAddResult").innerHTML = "";
 //
-// 	let tmp = {color:newColor,userId,userId};
+// 	let tmp = {color:newColor,userId:userId};
 // 	let jsonPayload = JSON.stringify( tmp );
 //
 // 	let url = urlBase + '/AddColor.' + extension;
