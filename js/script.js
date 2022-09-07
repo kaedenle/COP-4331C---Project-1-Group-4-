@@ -71,11 +71,13 @@ function readCookie()
 {
 	userId = -1;
 	let data = document.cookie;
+	console.log(data);
 	let splits = data.split(",");
 	for(var i = 0; i < splits.length; i++)
 	{
 		let thisOne = splits[i].trim();
 		let tokens = thisOne.split("=");
+		console.log(tokens);
 		if( tokens[0] == "firstName" )
 		{
 			firstName = tokens[1];
@@ -119,10 +121,11 @@ function searchContact()
 	// document.getElementById("contactSearchResult").innerHTML = "";
 
 	let contactList = "";
-
+	console.log(userId);
+	console.log(srch);
 	let tmp = {search:srch,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
-	console.log(tmp + "" + jsonPayload);
+	console.log(jsonPayload);
 	let url = urlBase + '/SearchContacts.' + extension;
 
 	let xhr = new XMLHttpRequest();
@@ -136,7 +139,7 @@ function searchContact()
 			{
 				// document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
 				let jsonObject = JSON.parse( xhr.responseText );
-
+				console.log(jsonObject);
 				for( let i=0; i<jsonObject.results.length; i++ )
 				{
 					contactList += jsonObject.results[i];
