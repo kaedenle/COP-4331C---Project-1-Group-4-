@@ -4,12 +4,18 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/contacts.css">
     <script src="js/script.js" charset="utf-8"></script>
-    <title></title>
+    <title>Contact Editor</title>
+    <script type="text/javascript">
+	   document.addEventListener('DOMContentLoaded', function()
+	    {
+		      readCookie();
+	    }, false);
+	</script>
   </head>
   <body>
     <div class="header">
       <div class="header-left">
-        <h2 id="userName"></h2>
+        <h2 id="userName" style="color: white"></h2>
       </div>
       <div class="header-center">
         <h3>Contacts 4 U </h3> <img src="images\icons8-contact-64.png" alt="">
@@ -40,7 +46,7 @@
           <button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
         </div>
         <div class="returned-contacts">
-          <p id="contactList">Returned users go here</p>
+          <p id="contactList"></p>
 
 
         </div>
