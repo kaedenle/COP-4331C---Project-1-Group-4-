@@ -164,10 +164,14 @@ function searchContact()
 //Add Contact
 function addContact()
 {
-	let newContact = document.getElementById("contactText").value;
-	document.getElementById("contactAddResult").innerHTML = "";
+	let newFirst = document.getElementById("contactFirst").value;
+	let newLast = document.getElementById("contactLast").value;
+	let newEmail = document.getElementById("contactEmail").value;
+	let newPhone = document.getElementById("contactNumber").value;
 
-	let tmp = {color:newContact,userId,userId};
+	// document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {firstName:newFirst,lastName:newLast,email:newEmail,phone:newPhone,userId,userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/AddContact.' + extension;
