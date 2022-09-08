@@ -1,11 +1,13 @@
 <?php
 	$inData = getRequestInfo();
-
+  //only need contact ID from search
+  /*
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
 	$email = $inData["email"];
 	$phone = $inData["phone"];
 	$userId = $inData["userId"];
+  $contactId = $inData["contactId"];*/
 
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
@@ -18,10 +20,10 @@
 	else
 	{
     //potential error in deleting contacts from other users?
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName like ?");
+		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ContactID = ?");
 
 
-		$stmt->bind_param("s", $firstName);
+		$stmt->bind_param("s", $inData["contactId"]);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
