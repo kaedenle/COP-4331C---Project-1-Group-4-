@@ -161,93 +161,67 @@ function searchContact()
 
 }
 
-function registerUser()
-{
-        console.log('Running..');
-        let createFirstName = document.getElementById("createFirstName").value;
-        let createLastName = document.getElementById("createLastName").value;
-        let createLogin = document.getElementById("createLogin").value;
-        let createPassword = document.getElementById("createPassword").value;
-        let createUser =
-        {
-                firstName: createFirstName,
-                lastName: createLastName,
-                login: createLogin,
-                password: createPassword
+function registerUser(){
 
-        };
+	console.log('Running..');
+	let createFirstName = document.getElementById("createFirstName").value;
+	let createLastName = document.getElementById("createLastName").value;
+	let createLogin = document.getElementById("createLogin").value;
+	let createPassword = document.getElementById("createPassword").value;
+	let createUser =
+	{
+			firstName: createFirstName,
+			lastName: createLastName,
+			login: createLogin,
+			password: createPassword
 
-        let jsonPayload = JSON.stringify(createUser);
-        let url = urlBase + '/Register.' + extension;
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try
-        {
-                xhr.onreadystatechange = function()
-                {
+	};
 
-if (this.readyState == 4 && this.status == 200)
-                        {
-                                // document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
-                                let jsonObject = JSON.parse( xhr.responseText );
-                                console.log(jsonObject);
-                };
-                xhr.send(jsonPayload);
-        }
-        catch(err)
-        {
-                console.log(err.message);
-        }
-
-
-        createFirstName.value = " ";
-        createLastName.value = " ";
-        createLogin.value = " ";
-        createPassword.value = " ";
-
-        document.getElementById("register-bar").style.visibility = "visible";
-        document.getElementById("register-text").innerHTML = "Account Registered";
-
-
-}
-}
-
-
-
-//Add Contact
-function addContact()
-{
-	let newFirst = document.getElementById("contactFirst").value;
-	let newLast = document.getElementById("contactLast").value;
-	let newEmail = document.getElementById("contactEmail").value;
-	let newPhone = document.getElementById("contactNumber").value;
-
-	let tmp = {firstName:newFirst,lastName:newLast,email:newEmail,phone:newPhone,userId:userId};
-	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/AddContact.' + extension;
-
+	let jsonPayload = JSON.stringify(createUser);
+	let url = urlBase + '/Register.' + extension;
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function()
-		{
-			if (this.readyState == 4 && this.status == 200)
+			xhr.onreadystatechange = function()
 			{
-				document.getElementById("contactAddResult").innerHTML = "New Contact Added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err) 
-	{
-		document.getElementById("contactAddResult").innerHTML = err.message;
-	}
-//hello
+
+				if (this.readyState == 4 && this.status == 200)
+				{
+						let jsonObject = JSON.parse( xhr.responseText );
+						console.log(jsonObject);
+						if(jsonObject['error'] == "")
+						{
+								document.getElementById("register-bar").style.visibility = "visible";
+								document.getElementById("register-text").innerHTML = "Account Registered";
+								document.getElementById('createFirstName').value = "";
+								document.getElementById('createLastName').value = "";
+								document.getElementById('createLogin').value = "";
+								document.getElementById('createPassword').value = "";
+						}
+						else
+						{
+								document.getElementById("register-bar").style.visibility = "visible";
+								document.getElementById("register-text").innerHTML = `${jsonObject['error']}`;
+								window.location.href = 'http://contacts4u.info';
+						}
+
+				}
+};
+xhr.send(jsonPayload);
 }
+catch(err)
+{
+console.log(err.message);
+}
+
+
+}
+
+
+
+        
 // function addColor()
 // {
 // 	let newColor = document.getElementById("colorText").value;
