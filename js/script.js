@@ -161,6 +161,60 @@ function searchContact()
 
 }
 
+function registerUser()
+{
+        console.log('Running..');
+        let createFirstName = document.getElementById("createFirstName").value;
+        let createLastName = document.getElementById("createLastName").value;
+        let createLogin = document.getElementById("createLogin").value;
+        let createPassword = document.getElementById("createPassword").value;
+        let createUser =
+        {
+                firstName: createFirstName,
+                lastName: createLastName,
+                login: createLogin,
+                password: createPassword
+
+        };
+
+        let jsonPayload = JSON.stringify(createUser);
+        let url = urlBase + '/Register.' + extension;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+
+if (this.readyState == 4 && this.status == 200)
+                        {
+                                // document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
+                                let jsonObject = JSON.parse( xhr.responseText );
+                                console.log(jsonObject);
+                };
+                xhr.send(jsonPayload);
+        }
+        catch(err)
+        {
+                console.log(err.message);
+        }
+
+
+        createFirstName.value = " ";
+        createLastName.value = " ";
+        createLogin.value = " ";
+        createPassword.value = " ";
+
+        document.getElementById("register-bar").style.visibility = "visible";
+        document.getElementById("register-text").innerHTML = "Account Registered";
+
+
+}
+}
+
+
+
 //Add Contact
 function addContact()
 {
@@ -188,11 +242,11 @@ function addContact()
 		};
 		xhr.send(jsonPayload);
 	}
-	catch(err)
+	catch(err) 
 	{
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
-
+//hello
 }
 // function addColor()
 // {
