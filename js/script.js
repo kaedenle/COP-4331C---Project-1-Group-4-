@@ -71,11 +71,13 @@ function readCookie()
 {
 	userId = -1;
 	let data = document.cookie;
+	console.log(data);
 	let splits = data.split(",");
 	for(var i = 0; i < splits.length; i++)
 	{
 		let thisOne = splits[i].trim();
 		let tokens = thisOne.split("=");
+		console.log(tokens);
 		if( tokens[0] == "firstName" )
 		{
 			firstName = tokens[1];
@@ -108,17 +110,23 @@ function doLogout()
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
 }
+
+// Search Contact
 function searchContact()
 {
 	let srch = document.getElementById("searchText").value;
-	document.getElementById("contactSearchResult").innerHTML = "";
+	// After user searches, then the edit and delete button will be visible.
+	let visible = document.getElementById("btn-visibility").style.visibility = "visible";
+
+	// document.getElementById("contactSearchResult").innerHTML = "";
 
 	let contactList = "";
-
+	console.log(userId);
+	console.log(srch);
 	let tmp = {search:srch,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/SearchContact.' + extension;
+	console.log(jsonPayload);
+	let url = urlBase + '/SearchContacts.' + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -129,9 +137,9 @@ function searchContact()
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-				document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
+				// document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
 				let jsonObject = JSON.parse( xhr.responseText );
-
+				console.log(jsonObject);
 				for( let i=0; i<jsonObject.results.length; i++ )
 				{
 					contactList += jsonObject.results[i];
@@ -152,12 +160,70 @@ function searchContact()
 	}
 
 }
-function addContact() //add contact
-{
-	let newContact = document.getElementById("contactText").value;
-	document.getElementById("contactAddResult").innerHTML = "";
 
-	let tmp = {color:newContact,userId,userId};
+function registerUser()
+{
+        console.log('Running..');
+        let createFirstName = document.getElementById("createFirstName").value;
+        let createLastName = document.getElementById("createLastName").value;
+        let createLogin = document.getElementById("createLogin").value;
+        let createPassword = document.getElementById("createPassword").value;
+        let createUser =
+        {
+                firstName: createFirstName,
+                lastName: createLastName,
+                login: createLogin,
+                password: createPassword
+
+        };
+
+        let jsonPayload = JSON.stringify(createUser);
+        let url = urlBase + '/Register.' + extension;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+
+if (this.readyState == 4 && this.status == 200)
+                        {
+                                // document.getElementById("contactSearchResult").innerHTML = "Color(s) has been retrieved";
+                                let jsonObject = JSON.parse( xhr.responseText );
+                                console.log(jsonObject);
+                };
+                xhr.send(jsonPayload);
+        }
+        catch(err)
+        {
+                console.log(err.message);
+        }
+
+
+        createFirstName.value = " ";
+        createLastName.value = " ";
+        createLogin.value = " ";
+        createPassword.value = " ";
+
+        document.getElementById("register-bar").style.visibility = "visible";
+        document.getElementById("register-text").innerHTML = "Account Registered";
+
+
+}
+}
+
+
+
+//Add Contact
+function addContact()
+{
+	let newFirst = document.getElementById("contactFirst").value;
+	let newLast = document.getElementById("contactLast").value;
+	let newEmail = document.getElementById("contactEmail").value;
+	let newPhone = document.getElementById("contactNumber").value;
+
+	let tmp = {firstName:newFirst,lastName:newLast,email:newEmail,phone:newPhone,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/AddContact.' + extension;
@@ -171,23 +237,23 @@ function addContact() //add contact
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-				document.getElementById("contactAddResult").innerHTML = "contact has been added";
+				document.getElementById("contactAddResult").innerHTML = "New Contact Added";
 			}
 		};
 		xhr.send(jsonPayload);
 	}
-	catch(err)
+	catch(err) 
 	{
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
-
+//hello
 }
 // function addColor()
 // {
 // 	let newColor = document.getElementById("colorText").value;
 // 	document.getElementById("colorAddResult").innerHTML = "";
 //
-// 	let tmp = {color:newColor,userId,userId};
+// 	let tmp = {color:newColor,userId:userId};
 // 	let jsonPayload = JSON.stringify( tmp );
 //
 // 	let url = urlBase + '/AddColor.' + extension;
