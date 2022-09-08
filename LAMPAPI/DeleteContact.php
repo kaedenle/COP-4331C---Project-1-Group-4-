@@ -23,7 +23,7 @@
 		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ContactID = ?");
 
 
-		$stmt->bind_param("s", $inData["contactId"]);
+		$stmt->bind_param("i", $inData["contactId"]);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
