@@ -13,9 +13,7 @@
 	$queryInfo = Array($firstName, $lastName, $email, $phone);
 	$columnInfo = Array("FirstName", "LastName", "Email", "Phone");
 
-	//both keys below HAVE to be present
-	//user ID (foriegn key in Contacts table)
-	$userId = $inData["userId"];
+	//HAVE TO HAVE contactId
 	$contactId = $inData["contactId"];
  
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
@@ -45,9 +43,9 @@
     
   	if($queryFlag){
   	  
-  	  $query .= ' where (ID=? AND ContactID=?)';
+  	  $query .= ' where ContactID=?';
  		  $stmt = $conn->prepare($query);
-  		$stmt->bind_param("ss", $userId, $contactId);
+  		$stmt->bind_param("i", $contactId);
   		$stmt->execute();
       $stmt->close();
   	}

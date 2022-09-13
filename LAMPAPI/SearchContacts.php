@@ -12,9 +12,29 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("select * from Contacts where (FirstName like ? OR LastName like ?) and  ID=?");
-		$contactName = "%" . $inData["search"] . "%";
-		$stmt->bind_param("sss", $contactName, $contactName, $inData["userId"]);
+    //Returns all contact in user's contact list if serach empty or doesn't exist
+    $stmt = "";
+    if(!array_key_exists("search" ,$inData) || $inData["search"] == ""){
+      $stmt = $conn->prepare("select * from Contacts where ID=?");
+      $stmt->bind_param("s", $inData["userId"]);
+    }
+    else{
+      //added functionallity on same string first and last name serach
+      $nameSplit = explode(' ', $inData["search"]);
+      $firstName = $nameSplit[0];
+      $lastName = "";
+      
+      //check if there is a last name in nameSplit
+      if(count($nameSplit) > 1){
+        $lastName = $nameSplit[1];
+      }
+      
+      $stmt = $conn->prepare("select * from Contacts where (FirstName like ? AND LastName like ?) and  ID=?");
+      $firstName .= "%";
+      $lastName .= "%";
+		  $stmt->bind_param("sss", $firstName, $lastName, $inData["userId"]);
+    }
+		
 		$stmt->execute();
 
 		$result = $stmt->get_result();
@@ -26,7 +46,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '{"firstName" : "' . $row["FirstName"] . '", "lastName" : "' . $row["LastName"].'", "phone" : "' . $row["Phone"].'", "email" : "' . $row["Email"].'"}';
+			$searchResults .= '{"contactId" : "' . $row["ContactID"] . '", "firstName" : "' . $row["FirstName"] . '", "lastName" : "' . $row["LastName"].'", "phone" : "' . $row["Phone"].'", "email" : "' . $row["Email"].'"}';
 		}
 
 		if( $searchCount == 0 )
