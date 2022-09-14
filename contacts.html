@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/contacts.css">
     <script src="js/script.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/md5.js"></script>
     <title>Contact Editor</title>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
 	   document.addEventListener('DOMContentLoaded', function()
 	    {
 		      readCookie();
 	    }, false);
-	</script>
+	</script> -->
   </head>
   <body>
     <div class="header">
@@ -28,36 +29,80 @@
     <div class="contacts-container">
 
       <div class="add-container">
-        <h2 style="color:white">Add Contact Information</h2>
+        <h2 style="color:white" id = "change-info">Add Contact Information</h2>
         <div class="addContact">
-          <input type="text" name="contactFirst" id="contactFirst" value="" placeholder="First"><br>
-          <input type="text" name="contactLast" id="contactLast" value="" placeholder="Last"><br>
-          <input type="email" name="contactEmail" id="contactEmail" value="" placeholder="Email"><br>
-          <input type="tel" name="" value="" id="contactNumber"maxlength="10" placeholder="Phone Number"><br>
-          <button type="button" class="btn-hover" id="addContact-btn"  name="button">Add Contact</button>
+
+          <input type="text" name="contactFirst" id="contactFirst" value="" placeholder="First Name"><br>
+
+          <input type="text" name="contactLast" id="contactLast" value="" placeholder="Last Name"><br>
+
+          <input type="email" name="contactEmail" id="contactEmail" value="" placeholder="example@gmail.com"><br>
+
+          <input type="tel" name="" value="" id="contactNumber" maxlength="11" minlength ="10" placeholder="###-###-####"><br>
+          <button type="button" class="btn-hover" id="addContact-btn"  name="button" onclick="addContact();">Add Contact</button>
+          <hr id = "updateContact-bar"style="visibility: hidden; width: 75%;">
+          <button type="button" class="btn-hover" id="updateContact-btn"  name="button" onclick="updateContact();">Update Contact</button>
+        </div>
+        <div class="successful-registration">
+          <hr id = "addContact-bar"style="visibility: hidden; width: 75%;">
+          <h2 id = "addContact" style="color:white; visibility: hidden"></h2>
         </div>
 
       </div>
       <div class="search-container">
-
+        <h2 style="color:white; text-align: center;">Search Contact Below</h2>
         <div class="search-bar">
-          <h2 style="color:white">Search Contact</h2>
+          <!-- <h2 style="color:white">Search Contact</h2> -->
           <input type="text" name="searchText" id="searchText" value="" placeholder="Enter Firstname" >
           <button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
         </div>
         <div class="returned-contacts">
+          <!-- <p id="contactList"></p> -->
+          <ol id="contactList">
+
+            <!-- <li><button type="button" class="btn-hover" id="editContact-btn" name="button">Edit</button>
+            <button type="button" class="btn-hover" id="deleteContact-btn"name="button">Delete</button></li> -->
+          </ol>
+
+
+        </div>
+        <!-- <div class="search-bar">
+          <input type="search" name="searchText" id="searchText" value="" placeholder="Enter Firstname" ><button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
+          <div class="auto-complete-box">
+            <ol id = "contactList">
+              <li>Neil Armstrong</li>
+              <li>Alan Bean</li>
+              <li>Peter Conrad</li>
+              <li>Edgar Mitchell</li>
+              <li>Alan Shepard</li>
+            </ol>
+
+          </div>
+
+        </div> -->
+
+
+        <!-- <div class="returned-contacts">
           <p id="contactList"></p>
 
 
-        </div>
-        <div class="contact-btns" id = "btn-visibility">
-          <button type="button" class="btn-hover" id="editContact-btn" name="button">Edit Contact</button>
-          <button type="button" class="btn-hover" id="deleteContact-btn"name="button">Delete Contact</button>
-        </div>
+
+        </div> -->
+        <!-- <div class="contact-btns" id = "btn-visibility">
+          <button type="button" class="btn-hover" id="editContact-btn" name="button">Edit</button>
+          <button type="button" class="btn-hover" id="deleteContact-btn"name="button">Delete</button>
+        </div> -->
       </div>
-
-
+      <!-- <script type="text/javascript">
+        let sug
+        const inputBox = document.getElementById("searchText");
+        inputBox.onkeyup = (e) =>
+        {
+          console.log(e.target.value);
+          // let userDate = e.target.value;
+          // let emptyArray = [];
+          // if()
+        }
+      </script> -->
   </body>
 </html>
-	
-	<!-- this is the one liner for the go back button -->
