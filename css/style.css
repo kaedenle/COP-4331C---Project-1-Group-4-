@@ -6,6 +6,16 @@
     box-sizing: border-box;
 }
 
+
+#idiotButton
+{
+  background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+  box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+  margin: 10px;
+  width: 175px;
+
+}
+
 .body
 {
   display: flex;
@@ -93,13 +103,14 @@
 .registrationContainer
 {
 
-  margin: 300px;
+  margin-top: 50px;
+  max-height: 90%;
   width: 300px;
 
 }
 .registerBox
 {
-
+  /* margin-top: 100px; */
   width: 100%;
   height: 100%;
   border: solid grey;
