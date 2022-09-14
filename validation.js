@@ -24,6 +24,8 @@ function validateEmail(emailAddr)
 function validatePhone(phoneNum)
 {
     let format = /^\d{10}$/;
+    // test this as well. It supports mutlitple formats
+    //^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$
     if (format.test(phoneNum))
     {
         return true;
