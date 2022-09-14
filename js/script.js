@@ -1,4 +1,3 @@
-
 const urlBase = 'http://contacts4u.info/LAMPAPI';
 const extension = 'php';
 
@@ -85,8 +84,24 @@ function updateContact()
 		document.getElementById("addContact").innerHTML = "You have an Empty Field";
 		return;
 	}
-	else
+	// Validates the email field
+	if (!validateEmail(contactEmail))
 	{
+		console.log("Invalid Email Format");
+		document.getElementById("addContact").style.visibility = "visible";
+		document.getElementById("addContact").innerHTML = "Invalid email format";
+		return;
+	}
+	// Validates the phone number
+	if (!validatePhone(contactNumber))
+	{
+		console.log("Invalid Phone Number Format");
+		document.getElementById("addContact").style.visibility = "visible";
+		document.getElementById("addContact").innerHTML = "Invalid phone number format";
+		return;
+	}
+	else
+	{	
 		let updatedContact =
 		{
 			firstName:contactFirst,
@@ -142,6 +157,22 @@ function addContact()
 		console.log("Empty");
 		document.getElementById("addContact").style.visibility = "visible";
 		document.getElementById("addContact").innerHTML = "You have an Empty Field";
+		return;
+	}
+	// Validates the email field
+	if (!validateEmail(contactEmail))
+	{
+		console.log("Invalid Email Format");
+		document.getElementById("addContact").style.visibility = "visible";
+		document.getElementById("addContact").innerHTML = "Invalid email format";
+		return;
+	}
+	// Validates the phone number
+	if (!validatePhone(contactNumber))
+	{
+		console.log("Invalid Phone Number Format");
+		document.getElementById("addContact").style.visibility = "visible";
+		document.getElementById("addContact").innerHTML = "Invalid phone number format";
 		return;
 	}
 	else
