@@ -5,13 +5,14 @@
     <link rel="stylesheet" href="css/contacts.css">
     <script src="js/script.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/validate.js"></script>
     <title>Contact Editor</title>
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
 	   document.addEventListener('DOMContentLoaded', function()
 	    {
 		      readCookie();
 	    }, false);
-	</script> -->
+	</script>
   </head>
   <body>
     <div class="header">
@@ -38,7 +39,7 @@
 
           <input type="email" name="contactEmail" id="contactEmail" value="" placeholder="example@gmail.com"><br>
 
-          <input type="tel" name="" value="" id="contactNumber" maxlength="11" minlength ="10" placeholder="###-###-####"><br>
+          <input type="tel" name="" value="" id="contactNumber" maxlength="13" minlength ="10" placeholder="###-###-####"><br>
           <button type="button" class="btn-hover" id="addContact-btn"  name="button" onclick="addContact();">Add Contact</button>
           <hr id = "updateContact-bar"style="visibility: hidden; width: 75%;">
           <button type="button" class="btn-hover" id="updateContact-btn"  name="button" onclick="updateContact();">Update Contact</button>
