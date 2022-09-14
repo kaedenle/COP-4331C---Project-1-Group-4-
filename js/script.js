@@ -236,20 +236,6 @@ function registerUser()
 		document.getElementById("register-text").innerHTML = "You have an Empty Field";
 		return;
 	}
-	// Validates the email field
-	if (!validateEmail(contactEmail))
-	{
-		console.log("Invalid Email Format");
-		document.getElementById("register-text").innerHTML = "Invalid email format";
-		return;
-	}
-	// Validates the phone number
-	if (!validatePhone(contactNumber))
-	{
-		console.log("Invalid Phone Number Format");
-		document.getElementById("register-text").innerHTML = "Invalid phone number format";
-		return;
-	}
 	else
 	{
 		let createUser =
