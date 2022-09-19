@@ -1,19 +1,11 @@
 <?php
 	$inData = getRequestInfo();
 
-	//if the key doesn't exist in the json input, this file will ignore it
-	//collaborate with front end to see if they can ignore json input if field is empty. 
-	//Otherwise see what's the most convient way for them to design it
-	//SUBJECT TO CHANGE
-
-	$firstName = checkKey($inData, "firstName_updated");
-	$lastName = checkKey($inData, "lastName");
-	$email = checkKey($inData, "email");
-	$phone = checkKey($inData, "phone");
-	$queryInfo = Array($firstName, $lastName, $email, $phone);
-	$columnInfo = Array("FirstName", "LastName", "Email", "Phone");
-
-	//HAVE TO HAVE contactId
+  //fields needed
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
+	$email = $inData["email"];
+	$phone = $inData["phone"];
 	$contactId = $inData["contactId"];
  
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
@@ -23,48 +15,13 @@
 	} 
 	else
 	{
-  	//preparing query to be sent
-  	$query = 'UPDATE Contacts set ';
-  	$err = "";
-  	//Set true if AT LEAST one piece of info isn't ""
-  	$queryFlag = False;
-  	//iterate through array
-  	for($x = 0; $x < count($queryInfo); $x++){
-  	  if($queryInfo[$x] != ""){
-  		//if queryFlag isn't True, this is the first cycle and thus a comma shouldn't be added
-  		if($queryFlag){
-  		  $query .= ',';
-  		}
-  		
-  		$queryFlag = True;
-  		$query .= $columnInfo[$x] . '="'.strval($queryInfo[$x]).'"';
-  	  }
-  	}
-    
-  	if($queryFlag){
-  	  
-  	  $query .= ' where ContactID=?';
- 		  $stmt = $conn->prepare($query);
-  		$stmt->bind_param("i", $contactId);
-  		$stmt->execute();
-      $stmt->close();
-  	}
-  	else{
-  	  $err = "No information selected";
-  	}
-  	
+    //update query needing 5 inputs (4 attributes, 1 primary key)
+    $stmt = $conn->prepare('UPDATE Contacts set FirstName = ?, LastName = ?, Email = ?, Phone = ? where ContactID = ?');
+ 		$stmt->bind_param("ssssi", $firstName, $lastName, $email, $phone, $contactId);
+ 		$stmt->execute();
+    $stmt->close();
   	$conn->close();
-  	returnWithError($err);
-	}
-
-	//Check if key exists
-	//returns "" if false returns value at key if true
-	function checkKey($json, $key)
-	{
-	if(array_key_exists($key ,$json)){
-	  return $json[$key];
-	}
-	return "";
+  	returnWithError("");
 	}
 
 	function getRequestInfo()
