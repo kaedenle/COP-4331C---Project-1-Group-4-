@@ -54,12 +54,12 @@
         <h2 style="color:white; text-align: center;">Search Contact Below</h2>
         <div class="search-bar">
           <!-- <h2 style="color:white">Search Contact</h2> -->
-          <input type="text" name="searchText" id="searchText" value="" placeholder="Enter Firstname" >
+          <input type="text" name="searchText" id="searchText" value="" placeholder="Enter Firstname" oninput="searchContact();">
           <button type="button" name="searchButton" onclick="searchContact();"> <img src="images\icons8-magnifier-16.png" alt="" > </button>
         </div>
         <div class="returned-contacts">
           <!-- <p id="contactList"></p> -->
-          <ol id="contactList">
+          <ol id="contactList", onscroll="lazyLoad()">
 
             <!-- <li><button type="button" class="btn-hover" id="editContact-btn" name="button">Edit</button>
             <button type="button" class="btn-hover" id="deleteContact-btn"name="button">Delete</button></li> -->
