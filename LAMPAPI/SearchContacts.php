@@ -29,10 +29,10 @@
         $lastName = $nameSplit[1];
       }
       
-      $stmt = $conn->prepare("select * from Contacts where (FirstName like ? AND LastName like ?) and  ID=?");
+      $stmt = $conn->prepare("select * from Contacts where (FirstName like ? AND LastName like ?) and  ID=? limit ?, 10");
       $firstName .= "%";
       $lastName .= "%";
-		  $stmt->bind_param("sss", $firstName, $lastName, $inData["userId"]);
+		  $stmt->bind_param("sssi", $firstName, $lastName, $inData["userId"], $inData["offset"]);
     }
 		
 		$stmt->execute();

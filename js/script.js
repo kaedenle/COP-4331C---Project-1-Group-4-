@@ -6,10 +6,15 @@ const extension = 'php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let flagUpdateBox = false;
 // Gets specific id of contact who is searched/edit/deleted.
 let contactId = null;
 // Is used to capture contactID and change it.
 let flag;
+//counter used in lazy loading
+let llCounter = 0;
+//how many contacts on search
+const numContacts = 10;
 
 // Logs user in,
 function doLogin()
@@ -129,6 +134,8 @@ function updateContact()
 	        // Outputs the succession of the updated contact.
       	  document.getElementById("addContact").style.visibility = "visible";
 	        document.getElementById("addContact").innerHTML = "Contact Updated!";
+          document.getElementById('searchText').value = "";
+          searchContact(true);
 				}
 			};
 			xhr.send(jsonPayload);
@@ -199,7 +206,8 @@ function addContact()
 				if(this.readyState == 4 && this.status == 200)
 				{
 					let jsonObject = JSON.parse( xhr.responseText );
-          searchContact();
+          //search contact to refresh with new field
+          searchContact(true);
 				}
 			};
 			xhr.send(jsonPayload);
@@ -350,19 +358,20 @@ function deleteContact(id, listItem)
 // Edit Contact
 function editContact(userId,contactId,firstName, lastName, phone, email)
 {
+  flagUpdateBox = true;
+  // Shows update contact btn and hides the add-contact btn.
+  document.getElementById("addContact").style.visibility = "hidden";
+	document.getElementById("addContact-bar").style.visibility = "hidden";
+	document.getElementById("addContact-btn").style.display = "none";
+	//document.getElementById("updateContact-btn").style.visibility = "visible";
+	//document.getElementById("updateContact-bar").style.visibility = "visible";
 	// Changes add-contact container so that it is ready to update user.
-	document.getElementById('change-info').innerHTML = "Edit Contact Information";
+	document.getElementById('change-info').innerHTML = "View Contact Information";
 	// Fills the input fields with the current information that wants to be edited.
 	document.getElementById("contactFirst").value = firstName;
 	document.getElementById("contactLast").value = lastName;
 	document.getElementById("contactNumber").value = phone;
 	document.getElementById("contactEmail").value = email;
-	// Shows update contact btn and hides the add-contact btn.
-  document.getElementById("addContact").style.visibility = "hidden";
-	document.getElementById("addContact-bar").style.visibility = "hidden";
-	document.getElementById("addContact-btn").style.visibility = "hidden";
-	document.getElementById("updateContact-btn").style.visibility = "visible";
-	document.getElementById("updateContact-bar").style.visibility = "visible";
 
 	console.log("userId: " + userId + " wants to edit: "+contactId);
 	// Updates flag to hold whichever contact we are going to use and update later.
@@ -429,25 +438,83 @@ function doLogout()
 function resetAddBox()
 {
 	console.log('clearing...');
-	document.getElementById("updateContact-btn").style.visibility = "hidden";
+  flagUpdateBox = false;
+	document.getElementById("updateContact-btn").style.display = "none";
 	document.getElementById("contactFirst").value = "";
 	document.getElementById("contactLast").value = "";
 	document.getElementById("contactNumber").value = "";
 	document.getElementById("contactEmail").value = "";
 	document.getElementById("addContact").style.visibility = "hidden";
 	document.getElementById("addContact-bar").style.visibility = "hidden";
-	document.getElementById("addContact-btn").style.visibility = "visible";
-	document.getElementById("updateContact-bar").style.visibility = "hidden";
+	document.getElementById("addContact-btn").style.display = "block";
+	
 	document.getElementById('change-info').innerHTML = "Add Contact Information";
 }
 
 function lazyLoad()
 {
-  console.log(document.getElementById('contactList').scrollTop);
+  console.log(document.getElementById('contactList').scrollTop + " " + document.getElementById('contactList').offsetHeight + " " + document.getElementById('contactList').scrollHeight);
+}
+
+//Add contact to contact list from search
+function addToContactList(jsonObject)
+{
+  if(jsonObject.error == "")
+  {
+    for( let i=0; i<jsonObject.results.length; i++ )
+		{
+      // Create list element to put into contact list.
+		  let item = document.createElement("li");
+          
+      //--------------------------------------------------------------------------------------------
+		  // Create edit btn that will be put into list element.
+		  let btn1 = document.createElement("button");
+		  contactId = jsonObject.results[i].contactId;
+      // Sets new edit btn to have show "View".
+		  btn1.innerHTML = "View";
+		  // Sets new edit btn to have same class as the other buttons in the page.
+		  btn1.className = "btn-hover";
+		  // Sets new view btn to have a distinct id that can be used for later.
+		  btn1.setAttribute("id" , "viewContact-btn");
+		  // Add event listener to new btn, whenever clicked it will call edit contact with the given parameters listed below.
+		  btn1.addEventListener('click', function()
+		  {
+		    // When called the edit function will have the infor of the contact that wants to be edited.
+ 				editContact(userId,jsonObject.results[i].contactId, jsonObject.results[i].firstName, jsonObject.results[i].lastName, jsonObject.results[i].phone, jsonObject.results[i].email);
+		  });
+          
+		  // Create delete btn that will be put into list element.
+		  let btn2 = document.createElement("button");
+		  // Sets new edit btn to have show "Delete".
+		  btn2.innerHTML = "Delete";
+		  // Sets new edit btn to have same class as the other buttons in the page.
+		  btn2.className = "btn-hover";
+		  // Sets new edit btn to have a distinct id that can be used for later.
+		  btn2.setAttribute("id" , "deleteContact-btn");
+		  // Add event listener to new btn, whenever clicked it will call edit contact with the given parameters listed below.
+		  btn2.addEventListener('click', function()
+		  {
+		    // When called the specific contactID and list element will be passed to delete.
+		    deleteContact(jsonObject.results[i].contactId, item);
+		  });
+      //--------------------------------------------------------------------------------------------
+       
+		  // Sets the newly created list item to display their first and lastName. And some extra space at the end before the buttons.
+		  item.innerHTML = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName + "&emsp; &emsp; &emsp;&emsp; &emsp;";
+		  // Adds edit and delete buttons to list element.
+		  item.appendChild(btn1);
+		  item.appendChild(btn2);
+  					
+            
+		  // Adds the list element to the contact list in the html.
+      contactList.appendChild(item);
+    }
+    llCounter += (1 * numContacts);
+  }
 }
 
 // Search for contacts that is in users address book.
-function searchContact()
+function searchContact(clearField)
 {
 	console.log('Searching...');
 	// Resets all the fields to empty.
@@ -456,13 +523,13 @@ function searchContact()
 	let srch = document.getElementById("searchText").value;
 	// After user searches, then the edit and delete button will be visible.
 	document.getElementById('contactList').style.visibility = "visible";
-	document.getElementById("addContact-btn").style.visibility = "visible";
+	document.getElementById("addContact-btn").style.display = "block";
 
 	console.log(userId);
 	console.log(srch);
 
 	// Sends post request of the contact that needs to be searched from database.
-	let tmp = {search:srch,userId:userId};
+	let tmp = {search:srch,userId:userId,offset:llCounter};
 	let jsonPayload = JSON.stringify( tmp );
 	console.log(jsonPayload);
 	let url = urlBase + '/SearchContacts.' + extension;
@@ -475,58 +542,16 @@ function searchContact()
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-        document.getElementById('contactList').innerHTML = "";
+        if(clearField)
+        {
+          document.getElementById('contactList').innerHTML = "";
+          llCounter = 0;
+        }
 				// Gets the list element from Html, that will contain all our returned contacts.
 				let contactList = document.getElementById('contactList');
 				let jsonObject = JSON.parse( xhr.responseText );
-				console.log(jsonObject + " NOW IN LOOP");
-				for( let i=0; i<jsonObject.results.length; i++ )
-				{
-					// Create list element to put into contact list.
-					let item = document.createElement("li");
-              
-          //--------------------------------------------------------------------------------------------
-					// Create edit btn that will be put into list element.
-					let btn1 = document.createElement("button");
-					contactId = jsonObject.results[i].contactId;
-					// Sets new edit btn to have show "Edit".
-					btn1.innerHTML = "Edit";
-					// Sets new edit btn to have same class as the other buttons in the page.
-					btn1.className = "btn-hover";
-					// Sets new edit btn to have a distinct id that can be used for later.
-					btn1.setAttribute("id" , "editContact-btn");
-					// Add event listener to new btn, whenever clicked it will call edit contact with the given parameters listed below.
-					btn1.addEventListener('click', function()
-					{
-						// When called the edit function will have the infor of the contact that wants to be edited.
-    				editContact(userId,jsonObject.results[i].contactId, jsonObject.results[i].firstName, jsonObject.results[i].lastName, jsonObject.results[i].phone, jsonObject.results[i].email);
-					});
-					// Create delete btn that will be put into list element.
-					let btn2 = document.createElement("button");
-					// Sets new edit btn to have show "Edit".
-					btn2.innerHTML = "Delete";
-					// Sets new edit btn to have same class as the other buttons in the page.
-					btn2.className = "btn-hover";
-					// Sets new edit btn to have a distinct id that can be used for later.
-					btn2.setAttribute("id" , "deleteContact-btn");
-					// Add event listener to new btn, whenever clicked it will call edit contact with the given parameters listed below.
-					btn2.addEventListener('click', function()
-					{
-						// When called the specific contactID and list element will be passed to delete.
-    				deleteContact(jsonObject.results[i].contactId, item);
-					});
-          //--------------------------------------------------------------------------------------------
-          
-					// Sets the newly created list item to display their first and lastName. And some extra space at the end before the buttons.
-					item.innerHTML = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName + "&emsp; &emsp; &emsp;&emsp; &emsp;";
-					// Adds edit and delete buttons to list element.
-					item.appendChild(btn1);
-					item.appendChild(btn2);
-					
-          
-					// Adds the list element to the contact list in the html.
-					contactList.appendChild(item);
-				}
+				console.log(JSON.stringify(jsonObject) + " NOW IN LOOP");
+        addToContactList(jsonObject);
 			}
 		};
 		xhr.send(jsonPayload);
@@ -537,4 +562,13 @@ function searchContact()
 	}
 	//document.getElementById('searchText').value = "";
 
+}
+
+function showUpdateButton()
+{
+  if(flagUpdateBox == true)
+  {
+    document.getElementById("updateContact-btn").style.display = "block";
+    document.getElementById('change-info').innerHTML = "Edit Contact Information";
+  }
 }

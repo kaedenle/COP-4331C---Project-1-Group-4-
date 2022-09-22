@@ -122,6 +122,13 @@ input[type="search"]::-webkit-search-results-decoration
   border-radius: 20px 0px 0px 20px;
   max-height: 100%;
 }
+.addContact
+{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .addContact input
 {
   
@@ -138,7 +145,7 @@ input[type="search"]::-webkit-search-results-decoration
   background-image: linear-gradient(90deg, rgba(88,88,88,1) 0%, rgba(44,44,71,1) 65%, rgba(23,22,22,1) 100%);
   box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
   margin: 15px;
-  visibility: visible;
+  display: block;
 }
 .addContact p
 {
@@ -194,13 +201,20 @@ padding-right: 25px;
 .returned-contacts li
 {
 
-  font-size: 20px;;
+  
   color: white;
   list-style: none;
   max-width: 100%;
   cursor: default;
   border-radius: 3px;
-  float: right;
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-item:center;
+  justify-content:space-between;
+  padding: 0 1rem;
+  font-weight: bolder;
+  white-space:nowrap;
   /* display: none; */
 }
 .returned-contacts li:hover
@@ -247,8 +261,9 @@ padding-right: 25px;
   width: 100px;
   background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
   box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+  flex: 0 0 auto;
 }
-#editContact-btn
+#viewContact-btn
 {
 
 
@@ -258,10 +273,12 @@ padding-right: 25px;
   width: 100px;
   background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
   box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+  margin-left:auto;
+  flex: 0 0 auto;
 }
 #updateContact-btn
 {
-  visibility: hidden;
+  display: none;
   background-image: linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7);
   box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
 }
