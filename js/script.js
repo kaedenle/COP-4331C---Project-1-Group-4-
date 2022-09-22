@@ -6,8 +6,8 @@ const extension = 'php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
-let flagUpdateBox = false;
-// Gets specific id of contact who is searched/edit/deleted.
+let viewMode = false;
+//Gets specific id of contact who is searched/edit/deleted.
 let contactId = null;
 // Is used to capture contactID and change it.
 let flag;
@@ -136,6 +136,7 @@ function updateContact()
 	        document.getElementById("addContact").innerHTML = "Contact Updated!";
           document.getElementById('searchText').value = "";
           searchContact(true);
+          showViewMode();
 				}
 			};
 			xhr.send(jsonPayload);
@@ -223,7 +224,7 @@ function addContact()
 		// Outputs the succession of the added contact.
 		document.getElementById("addContact").style.visibility = "visible";
 		document.getElementById("addContact").innerHTML = "Contact Added";
-    
+
 	}
 
 }
@@ -355,16 +356,15 @@ function deleteContact(id, listItem)
 
 }
 
-// Edit Contact
+// View Contact
 function editContact(userId,contactId,firstName, lastName, phone, email)
 {
-  flagUpdateBox = true;
-  // Shows update contact btn and hides the add-contact btn.
-  document.getElementById("addContact").style.visibility = "hidden";
+	viewMode = true;
+ // Shows update contact btn and hides the add-contact btn.
+	document.getElementById("addContact").style.visibility = "hidden";
 	document.getElementById("addContact-bar").style.visibility = "hidden";
 	document.getElementById("addContact-btn").style.display = "none";
-	//document.getElementById("updateContact-btn").style.visibility = "visible";
-	//document.getElementById("updateContact-bar").style.visibility = "visible";
+
 	// Changes add-contact container so that it is ready to update user.
 	document.getElementById('change-info').innerHTML = "View Contact Information";
 	// Fills the input fields with the current information that wants to be edited.
@@ -377,6 +377,11 @@ function editContact(userId,contactId,firstName, lastName, phone, email)
 	// Updates flag to hold whichever contact we are going to use and update later.
 	flag = contactId;
 	console.log("flag: "+flag);
+}
+
+function cancelUpdate()
+{
+	resetAddBox();
 }
 
 // Saves cookies for the user. Written By: Rick Leinicker
@@ -438,22 +443,25 @@ function doLogout()
 function resetAddBox()
 {
 	console.log('clearing...');
-  flagUpdateBox = false;
-	document.getElementById("updateContact-btn").style.display = "none";
+  viewMode = false;
+  setTimeout(function(){document.getElementById("addContact").style.visibility = "hidden"}, 6000);
 	document.getElementById("contactFirst").value = "";
 	document.getElementById("contactLast").value = "";
 	document.getElementById("contactNumber").value = "";
 	document.getElementById("contactEmail").value = "";
-	document.getElementById("addContact").style.visibility = "hidden";
 	document.getElementById("addContact-bar").style.visibility = "hidden";
 	document.getElementById("addContact-btn").style.display = "block";
-	
+
 	document.getElementById('change-info').innerHTML = "Add Contact Information";
 }
 
 function lazyLoad()
 {
-  console.log(document.getElementById('contactList').scrollTop + " " + document.getElementById('contactList').offsetHeight + " " + document.getElementById('contactList').scrollHeight);
+  //if scroll bar gets 75% the way down
+  if((document.getElementById('contactList').scrollTop + document.getElementById('contactList').offsetHeight) >=  document.getElementById('contactList').scrollHeight)
+  {
+    searchContact(false);
+  }
 }
 
 //Add contact to contact list from search
@@ -465,7 +473,7 @@ function addToContactList(jsonObject)
 		{
       // Create list element to put into contact list.
 		  let item = document.createElement("li");
-          
+
       //--------------------------------------------------------------------------------------------
 		  // Create edit btn that will be put into list element.
 		  let btn1 = document.createElement("button");
@@ -482,7 +490,7 @@ function addToContactList(jsonObject)
 		    // When called the edit function will have the infor of the contact that wants to be edited.
  				editContact(userId,jsonObject.results[i].contactId, jsonObject.results[i].firstName, jsonObject.results[i].lastName, jsonObject.results[i].phone, jsonObject.results[i].email);
 		  });
-          
+
 		  // Create delete btn that will be put into list element.
 		  let btn2 = document.createElement("button");
 		  // Sets new edit btn to have show "Delete".
@@ -498,14 +506,13 @@ function addToContactList(jsonObject)
 		    deleteContact(jsonObject.results[i].contactId, item);
 		  });
       //--------------------------------------------------------------------------------------------
-       
-		  // Sets the newly created list item to display their first and lastName. And some extra space at the end before the buttons.
-		  item.innerHTML = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName + "&emsp; &emsp; &emsp;&emsp; &emsp;";
+
+		  // Sets the newly created list item to display their first and lastName.
+		  item.innerHTML = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName;
 		  // Adds edit and delete buttons to list element.
 		  item.appendChild(btn1);
 		  item.appendChild(btn2);
-  					
-            
+
 		  // Adds the list element to the contact list in the html.
       contactList.appendChild(item);
     }
@@ -516,14 +523,19 @@ function addToContactList(jsonObject)
 // Search for contacts that is in users address book.
 function searchContact(clearField)
 {
-	console.log('Searching...');
+	console.log('Searching... ' + clearField);
 	// Resets all the fields to empty.
-	resetAddBox();
 	// Captures the search string inputted by user.
 	let srch = document.getElementById("searchText").value;
 	// After user searches, then the edit and delete button will be visible.
 	document.getElementById('contactList').style.visibility = "visible";
-	document.getElementById("addContact-btn").style.display = "block";
+	//document.getElementById("addContact-btn").style.display = "block";
+  //reset llCounter if clear field
+  if(clearField)
+  {
+    llCounter = 0;
+    resetAddBox();
+  }
 
 	console.log(userId);
 	console.log(srch);
@@ -545,8 +557,8 @@ function searchContact(clearField)
         if(clearField)
         {
           document.getElementById('contactList').innerHTML = "";
-          llCounter = 0;
         }
+        console.log("LLCOUNTER IS " + llCounter);
 				// Gets the list element from Html, that will contain all our returned contacts.
 				let contactList = document.getElementById('contactList');
 				let jsonObject = JSON.parse( xhr.responseText );
@@ -564,11 +576,26 @@ function searchContact(clearField)
 
 }
 
-function showUpdateButton()
+function showUpdateMode()
 {
-  if(flagUpdateBox == true)
+  if(viewMode)
   {
     document.getElementById("updateContact-btn").style.display = "block";
+    document.getElementById("cancel-btn").style.display = "block";
     document.getElementById('change-info').innerHTML = "Edit Contact Information";
   }
 }
+
+//update mode stays the same
+function showViewMode()
+{
+  if(viewMode)
+  {
+    document.getElementById('change-info').innerHTML = "View Contact Information";
+  }
+    document.getElementById("updateContact-btn").style.display = "none";
+    document.getElementById("cancel-btn").style.display = "none";  
+}
+
+
+

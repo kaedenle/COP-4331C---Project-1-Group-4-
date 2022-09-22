@@ -15,8 +15,8 @@
     //Returns all contact in user's contact list if serach empty or doesn't exist
     $stmt = "";
     if(!array_key_exists("search" ,$inData) || $inData["search"] == ""){
-      $stmt = $conn->prepare("select * from Contacts where ID=?");
-      $stmt->bind_param("s", $inData["userId"]);
+      $stmt = $conn->prepare("select * from Contacts where ID=? LIMIT 10 OFFSET ?");
+      $stmt->bind_param("si", $inData["userId"], $inData["offset"]);
     }
     else{
       //added functionallity on same string first and last name serach
@@ -29,7 +29,7 @@
         $lastName = $nameSplit[1];
       }
       
-      $stmt = $conn->prepare("select * from Contacts where (FirstName like ? AND LastName like ?) and  ID=? limit ?, 10");
+      $stmt = $conn->prepare("select * from Contacts where (FirstName like ? AND LastName like ?) and  ID=? LIMIT 10 OFFSET ?");
       $firstName .= "%";
       $lastName .= "%";
 		  $stmt->bind_param("sssi", $firstName, $lastName, $inData["userId"], $inData["offset"]);
